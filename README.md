@@ -58,3 +58,6 @@ pip install -r requirements.txt
 ```
 deactivate
 ```
+
+<h1 style="text-align:center;">Now you are ready to go</h1>
+<img style="width:300px; display:block;margin:auto;"src="https://media.giphy.com/media/SJjWgVgBhkNhJ29Ins/giphy.gif">
