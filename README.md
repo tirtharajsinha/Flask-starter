@@ -36,13 +36,13 @@ git commit -m "good first commit"
 git remote add origin [newGithubURL]
 git push origin master
 ```
-> 5. create a virtual environment and install requirements.
+> 5. [create](#set-up-a-virtual-environmentrecommended) a virtual environment and install requirements.(Recommended)
 
 ## step 2 : download the code directly from github
 
 > 1. if you want to download the repository | [click here](https://github.com/tirtharajsinha/Flask-starter/archive/refs/heads/main.zip).<br>
 > 2. Unzip it and start building your app.<br>
-> 3. create a virtual environment and install requirements.
+> 3. [create](#set-up-a-virtual-environmentrecommended) a virtual environment and install requirements.(recommended)
 
 
 <br>
