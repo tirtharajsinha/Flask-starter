@@ -1,0 +1,147 @@
+{% extends 'admin/master.html' %}
+{% block head_css %}
+{{ super() }}
+<style>
+    .nev {
+        display: flex;
+        width: 100%;
+        height: 50px;
+        justify-content: space-between;
+        padding-left: 20px;
+        padding-right: 20px;
+        align-items: center;
+        margin-bottom: 50px;
+        border-bottom: 1px solid #666;
+    }
+
+    .nev .right {
+        display: flex;
+        height: 100%;
+        width: autopx;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    .nev .right * {
+        margin-left: 10px;
+    }
+
+    .user-cont {
+        width: 100%;
+        margin-bottom: 100px;
+    }
+
+    .user-details {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .user-cont h3 {
+        color: #666;
+        letter-spacing: 1px;
+    }
+
+    .user-details .box {
+        width: 300px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        flex-direction: column;
+        margin: 20px;
+    }
+
+    .user_details input {
+        width: 100%;
+        color: #666;
+        height: 30px;
+        font-size: 18px;
+    }
+
+    .control {
+        list-style: none;
+        font-size: 18px;
+        color: rgb(54, 54, 54);
+        letter-spacing: 1px;
+    }
+
+    .control li {
+        margin-bottom: 20px;
+    }
+
+    .control button {
+        border: none;
+        border-radius: 15px;
+        background-color: rgb(230, 230, 230);
+        color: rgb(71, 71, 71);
+        padding: 10px;
+        margin-left: 20px;
+    }
+
+    .control button:hover {
+        color: rgb(59, 59, 59);
+        background-color: rgb(204, 235, 155);
+    }
+
+    .control .caut {
+        background-color: rgb(231, 186, 186);
+    }
+
+    .control .caut:hover {
+        background-color: rgb(221, 27, 27);
+        color: white;
+    }
+
+    .sum-box {
+        width: 80%;
+        margin: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .sum-box * {
+        margin: 10px;
+    }
+
+    .sum-box textarea {
+        width: 340px;
+        height: 100px;
+    }
+
+    #copy {
+        padding: 10px;
+        background-color: rgb(187, 221, 155);
+        border-radius: 15px;
+        color: black;
+        letter-spacing: 1px;
+    }
+</style>
+{% endblock head_css %}
+
+{% block body %}
+{{ super() }}
+
+<div class="nev">
+    <h4>Tirtharaj sinha</h4>
+    <div class="right">
+        <a href="/logout" class="home"><i class="fa fa-admin"></i>Logout</a>
+        <a href="/adminlogin" class="home"><i class="fa fa-admin"></i>login</a>
+
+        <a href="/" class="home"><i class="fa fa-admin"></i>View app</a>
+    </div>
+</div>
+<div class="notices">
+    <ul>
+        <h3>Notices</h4>
+            <li>This portion of web-app is only for Admin type user.</li>
+            <li>If you can't find any button side of home button at nev, then you don't have admin account or youa are
+                not logged in.</li>
+            <li>You can always use the view app/logout/login button.</li>
+
+    </ul>
+</div>
+{% endblock body %}

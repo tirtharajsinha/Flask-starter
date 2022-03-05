@@ -4,4 +4,12 @@
   box-sizing: border-box;
 }
 body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(42, 45, 59);
+  min-height: 100vh;
+}
+h1 {
+  color: white;
 }

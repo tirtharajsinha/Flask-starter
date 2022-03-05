@@ -1,0 +1,50 @@
+{% extends 'admin/model/create.html' %}
+{% block head_css %}
+{{ super() }}
+<link href="{{ url_for('static', filename='admin.css') }}" rel="stylesheet">
+{% endblock head_css %}
+{% block body %}
+
+<!-- <details>
+    <summary>Image convertion Center</summary>
+    <div class="sum-box">
+        <input type="file" onchange="encodeImageFileAsURL(this)" />
+        <img src="" alt="" id="org" width="100px" height="100">
+        <textarea id="out"></textarea>
+        <button id="copy" onclick="myFunction()">Copy code</button>
+    </div>
+
+</details> -->
+
+
+
+{{ super() }}
+<script>
+    function encodeImageFileAsURL(element) {
+        var file = element.files[0];
+        document.getElementById("org").src = file.src;
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            console.log('RESULT', reader.result)
+            document.getElementById("out").value = reader.result;
+            document.getElementById("org").src = reader.result;
+        }
+        reader.readAsDataURL(file);
+    }
+    function myFunction() {
+        /* Get the text field */
+        var copyText = document.getElementById("out");
+
+
+        /* Copy the text inside the text field */
+        navigator.clipboard.writeText(copyText.value);
+        document.getElementById("copy").innerHTML = "Copied successfully";
+        setTimeout(() => {
+            document.getElementById("copy").innerHTML = "Copy code"
+        }, 10000);
+
+
+        /* Alert the copied text */
+    }
+</script>
+{% endblock %}
