@@ -1,5 +1,5 @@
 import views
-from admin import auth
+from admin import auth, adminconsole
 from flask import Flask, redirect
 from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager, current_user
@@ -31,57 +31,15 @@ db.init_app(app)
 migrate = Migrate(app, db)
 
 
-class MyView(AdminIndexView):
-    @expose("/")
-    def index(self):
-        return self.render("admin/admin_base.html", user=current_user)
-
-    def is_accessible(self):
-        perm = current_user.is_authenticated and current_user.is_active
-        return perm
-
-    def inaccessible_callback(self, name, **kwargs):
-        # redirect to login page if user doesn't have access
-        return redirect("/adminlogin")
-
-
-class MicroBlogModelView(ModelView):
-    create_template = "admin/microblog_create.html"
-    edit_template = "admin/microblog_edit.html"
-
-    def is_accessible(self):
-        perm = (
-            current_user.is_authenticated
-            and current_user.permission == "admin"
-            and current_user.is_active
-        )
-        return perm
-
-    def inaccessible_callback(self, name, **kwargs):
-        # redirect to login page if user doesn't have access
-        return redirect("/adminlogin")
-
-
-# setting up admin panel
-admin = Admin(
-    app,
-    name="admin panel",
-    index_view=MyView(
-        name="admin panel",
-        menu_icon_type="glyph",
-        menu_icon_value="glyphicon-home",
-        url="/admin",
-    ),
-
-)
-
-admin.add_view(MicroBlogModelView(User, db.session))
-
 #######################
 
 
 # urls
 app = urls.add_url(app)
+
+
+# Loading the admin panel
+admin = adminconsole.get_admin(app)
 
 
 # authentication and authorization
