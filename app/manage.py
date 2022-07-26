@@ -4,7 +4,7 @@ import sys
 import os
 
 operations = ["createsuperuser", "makemigrations",
-              "migrate", "runserver", "-h", "--help"]
+              "migrate", "runserver", "-h", "--help", "init"]
 
 
 def createsuperuser():
@@ -46,6 +46,13 @@ def createsuperuser():
         print(e)
 
 
+def migrate_init():
+    try:
+        os.system('flask db init')
+    except:
+        print("makemigrations failed.")
+
+
 def makemigrations():
     try:
         os.system('flask db migrate')
@@ -70,7 +77,8 @@ def runserver():
 def flaskhelp():
     desp = """
     positional arguments:
-    createsuperuser  create admin user
+    init             initialize the db migrations(run only for first time).
+    createsuperuser  create admin user.
     makemigrations   finds possible migrations.
     migrate          migrate the database.
     runserver        Run the flask app.
@@ -84,6 +92,8 @@ def flaskhelp():
 
 if sys.argv[1] == operations[0]:
     createsuperuser()
+elif sys.argv[1] == operations[5]:
+    migrate_init()
 elif sys.argv[1] == operations[1]:
     makemigrations()
 elif sys.argv[1] == operations[2]:

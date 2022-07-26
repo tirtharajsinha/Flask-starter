@@ -1,10 +1,24 @@
-from models import db, User
+from models import db, User, admin_history, dummy
 from flask_admin import Admin, BaseView, expose, Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from flask import Flask, redirect, render_template
 from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager, current_user
+from datetime import datetime
 import urls
+
+
+def load_history(model, event):
+    now = datetime.now()
+    newhist = admin_history(
+        user=current_user.username,
+        table=model.__tablename__,
+        event=event,
+        row_id=model.id,
+        time=now.strftime("%d/%m/%Y %H:%M:%S")
+    )
+    db.session.add(newhist)
+    db.session.commit()
 
 
 class MyView(AdminIndexView):
@@ -21,7 +35,7 @@ class MyView(AdminIndexView):
         return redirect("/adminlogin?next=admin")
 
 
-class PublicationModelView(ModelView):
+class DBModelView(ModelView):
     create_template = "admin/microblog_create.html"
     edit_template = "admin/microblog_edit.html"
 
@@ -36,6 +50,18 @@ class PublicationModelView(ModelView):
     def inaccessible_callback(self, name, **kwargs):
         # redirect to login page if user doesn't have access
         return redirect("/login")
+
+    def after_model_change(self, form, model, is_created):
+        print(model.__tablename__, model.id, is_created, "----------------->")
+        event = "edited"
+        if is_created:
+            event = "created"
+        load_history(model, event)
+
+    def after_model_delete(self, model):
+        event = "deleted"
+        print(model.__tablename__, model.id, "----------------->")
+        load_history(model, event)
 
     def _description_formatter(view, context, model, name):
         return model.desc[:30]
@@ -52,9 +78,10 @@ class PublicationModelView(ModelView):
     }
 
 
-class MicroBlogModelView(ModelView):
+class AdminModelView(ModelView):
     create_template = "admin/microblog_create.html"
     edit_template = "admin/microblog_edit.html"
+    can_export = True
 
     def is_accessible(self):
         perm = (
@@ -87,5 +114,7 @@ def get_admin(app):
 
 
 def add_adminview(admin):
-    admin.add_view(MicroBlogModelView(User, db.session))
+    admin.add_view(DBModelView(User, db.session))
+    admin.add_view(AdminModelView(admin_history, db.session))
+    admin.add_view(DBModelView(dummy, db.session))
     return admin
