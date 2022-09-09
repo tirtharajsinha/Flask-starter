@@ -21,10 +21,15 @@ def load_history(model, event):
     db.session.commit()
 
 
+def read_history():
+    return admin_history.query.order_by(admin_history.id.desc())
+
+
 class MyView(AdminIndexView):
     @expose("/")
     def index(self):
-        return self.render("admin/admin_base.html", user=current_user)
+        history = read_history()
+        return self.render("admin/admin_base.html", user=current_user, history=history)
 
     def is_accessible(self):
         perm = current_user.is_authenticated and current_user.is_active
@@ -101,6 +106,7 @@ def get_admin(app):
     admin = Admin(
         app,
         name="admin panel",
+
         index_view=MyView(
             name="Home",
             menu_icon_type="glyph",

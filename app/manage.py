@@ -1,10 +1,11 @@
-from models import User
+from models import Userdata
 from datetime import date
 import sys
 import os
 
+
 operations = ["createsuperuser", "makemigrations",
-              "migrate", "runserver", "-h", "--help", "init"]
+              "migrate", "runserver", "-h", "--help", "init", "backup-db"]
 
 
 def createsuperuser():
@@ -22,12 +23,12 @@ def createsuperuser():
                 today = date.today()
                 joined = today.strftime("%b-%d-%Y")
 
-                getuser = User.query.filter_by(username=username).first()
+                getuser = Userdata.query.filter_by(username=username).first()
                 if getuser:
                     print("username or email already registered.")
                     return False
 
-                new_user = User(
+                new_user = Userdata(
                     email=email,
                     username=username,
                     password=password,
@@ -67,6 +68,13 @@ def migrate():
         print("migration failed.")
 
 
+def backup_db():
+    try:
+        os.system('python backup_tool.py')
+    except Exception as e:
+        print("ERROR OCCURED !!!!! \n"+str(e))
+
+
 def runserver():
     try:
         os.system('python app.py')
@@ -82,6 +90,7 @@ def flaskhelp():
     makemigrations   finds possible migrations.
     migrate          migrate the database.
     runserver        Run the flask app.
+    backup-db        Backup database.(update backup-tool.py file for configuration)
 
     optional arguments:
     -h, --help       show this help message and exit
@@ -90,9 +99,11 @@ def flaskhelp():
     print(desp)
 
 
-if sys.argv[1] == operations[0]:
+if len(sys.argv)<2:
+    flaskhelp()
+elif sys.argv[1] == operations[0]:
     createsuperuser()
-elif sys.argv[1] == operations[5]:
+elif sys.argv[1] == operations[6]:
     migrate_init()
 elif sys.argv[1] == operations[1]:
     makemigrations()
@@ -100,7 +111,7 @@ elif sys.argv[1] == operations[2]:
     migrate()
 elif sys.argv[1] == operations[3]:
     runserver()
-elif sys.argv[1] == operations[4]:
-    flaskhelp()
+elif sys.argv[1] == operations[7]:
+    backup_db()
 else:
     flaskhelp()

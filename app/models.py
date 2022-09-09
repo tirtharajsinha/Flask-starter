@@ -38,6 +38,8 @@ class dummy(UserMixin, db.Model):
     __tablename__ = 'dummy'
     id = db.Column(db.Integer, primary_key=True)
     user = db.Column(db.String(100), nullable=False)
+
+
 # to create migration run in terminal $ flask db init
 # to migrate run in terminal $ flask db migrate
 # to upgade  run in terminal $ flask db upgrade
