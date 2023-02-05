@@ -1,4 +1,9 @@
 /venv
+*/venv
 */__pycache__
+/__pycache__
+*__pycache__
 */registration.db
 registration.db
+/migrations
+*/migrations

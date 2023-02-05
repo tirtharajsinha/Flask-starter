@@ -1,4 +1,4 @@
-from models import Userdata
+from models import User
 from datetime import date
 import sys
 import os
@@ -24,17 +24,20 @@ def createsuperuser():
             print("Superuser creation Aborted")
             return False
 
-        email=input("Enter email :")
+        email=input("Enter email : [Default : {}@{}.com".format(username,username))
+        if email=="":
+            email="{}@{}.com".format(username,username)
         firstname=input("Enter Firstname :")
         lastname=input("Enter Lastname :")
-
+        print("\n\n\n")
+        print("*"*20)
         print("Here is what we got from you")
         print("Username :",username)
         print("Password :",len(password)*"*")
         print("Email : ",email)
         print("Firstname :",firstname)
         print("Lastname :",lastname)
-
+        print("*"*20,"\n")
         
         perm = input("Are your want to continue [Y/n]: ")
         with app.app_context():
@@ -42,12 +45,13 @@ def createsuperuser():
                 today = date.today()
                 joined = today.strftime("%b-%d-%Y")
 
-                getuser = Userdata.query.filter_by(username=username).first()
-                if getuser:
+                getuser = User.query.filter_by(username=username).first()
+                getemail = User.query.filter_by(email=email).first()
+                if getuser and email:
                     print("username or email already registered.")
                     return False
 
-                new_user = Userdata(
+                new_user = User(
                     email=email,
                     username=username,
                     password=password,
@@ -60,7 +64,7 @@ def createsuperuser():
                 db.session.add(new_user)
                 db.session.commit()
                 print(
-                    "Superuser created succufully.\n don't forget your username and password.")
+                    "Superuser created succufully.\nDon't forget your username and password.")
 
     except Exception as e:
         print(e)
