@@ -12,14 +12,33 @@ def createsuperuser():
     from app import db, app
 
     try:
-        username = input("Enter Username : ")
-        password = input("Enter password : ")
+        username = input("Enter Username* : ")
+        if username=="":
+            print("Username can't be empty")
+            print("Superuser creation Aborted")
+            return False
+
+        password = input("Enter password* : ")
+        if password=="":
+            print("Password can't be empty")
+            print("Superuser creation Aborted")
+            return False
+
+        email=input("Enter email :")
+        firstname=input("Enter Firstname :")
+        lastname=input("Enter Lastname :")
+
+        print("Here is what we got from you")
+        print("Username :",username)
+        print("Password :",len(password)*"*")
+        print("Email : ",email)
+        print("Firstname :",firstname)
+        print("Lastname :",lastname)
+
+        
         perm = input("Are your want to continue [Y/n]: ")
         with app.app_context():
             if(perm.lower() != "n"):
-                email = ""
-                firstname = ""
-                lastname = ""
                 today = date.today()
                 joined = today.strftime("%b-%d-%Y")
 

@@ -53,24 +53,6 @@ def load_user(get_id):
     return User.query.filter_by(username=get_id).first()
 
 
-# @app.cli.command("create-superuser")
-# def create_superuser():
-#     username = input("Enter username: ")
-#     password = input("Enter password: ")
-#     email = input("Enter email: ")
-
-#     newsuper = User(
-#         username=username,
-#         password=password
-#         firstname=""
-#         email=email
-#         lastname=""
-#         joined="00/00/00"
-#         permission="admin"
-#     )
-
-#     db.session.add(newsuper)
-#     db.session.commit()
 
 
 if __name__ == "__main__":

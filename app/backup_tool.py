@@ -3,11 +3,20 @@ from models import db as Base
 import os
 import sys
 
+class otherConfig:
+    SQLITE_DATABASE_URI="sqlite:///database.sqlite"
+    DATABASE_URI="<PUT DB URL HERE>"
+DBconfig=otherConfig()
+
+
 target_filename = "database.sqlite"
 target_isfile = True
 current_version = "1"
-TRAGET_DB_URI = 'sqlite:///database.sqlite'
-SOURCE_DB_URI = 'postgresql://xkzpsbhiivbdsp:2e1dc35aba1f3297ee82834be5d60f0f06630095d486417aaba15e3cbfd7e4d2@ec2-35-175-68-90.compute-1.amazonaws.com:5432/d3gdpfgq4vt2c5'
+
+
+# Configure you URI here. Do It with caution.
+TRAGET_DB_URI = DBconfig().SQLITE_DATABASE_URI
+SOURCE_DB_URI = DBconfig().DATABASE_URI
 
 if target_isfile and os.path.isfile(target_filename):
     print("Same file found.")
@@ -29,6 +38,7 @@ try:
     with engine_lite.connect() as conn_lite:
         with engine_cloud.connect() as conn_cloud:
             print("✅")
+            # exit()
             print("Creating the tables fetched from the schema", end=" ")
             sys.stdout.flush()
             try:

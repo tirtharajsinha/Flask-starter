@@ -19,3 +19,5 @@ class ProductionConfig(Config):
     FLASK_SECRET = SECRET_KEY
     STATIC_FOLDER = 'static',
     TEMPLATE_FOLDER = 'templates'
+
+

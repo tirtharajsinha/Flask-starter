@@ -7,6 +7,14 @@ from flask_login import LoginManager, current_user
 from datetime import datetime
 import urls
 
+############################################
+# DOCS
+# Register model here to see your model in admin page.
+# first import your Model
+# go to add_adminview function at the end of the file.
+# follow the other model register mothod.
+# register your model before return statement.
+############################################
 
 def load_history(model, event):
     now = datetime.now()
@@ -25,14 +33,18 @@ def read_history():
     return admin_history.query.order_by(admin_history.id.desc())
 
 
-class MyView(AdminIndexView):
+class AdminView(AdminIndexView):
     @expose("/")
     def index(self):
         history = read_history()
         return self.render("admin/admin_base.html", user=current_user, history=history)
 
     def is_accessible(self):
-        perm = current_user.is_authenticated and current_user.is_active
+        perm = (
+            current_user.is_authenticated
+            and current_user.permission == "admin"
+            and current_user.is_active
+        )
         return perm
 
     def inaccessible_callback(self, name, **kwargs):
@@ -107,7 +119,7 @@ def get_admin(app):
         app,
         name="admin panel",
 
-        index_view=MyView(
+        index_view=AdminView(
             name="Home",
             menu_icon_type="glyph",
             menu_icon_value="glyphicon-home",
@@ -115,12 +127,13 @@ def get_admin(app):
         )
     )
     admin = add_adminview(admin)
+    admin.add_view(AdminModelView(admin_history, db.session))
 
     return admin
 
 
+
 def add_adminview(admin):
     admin.add_view(DBModelView(User, db.session))
-    admin.add_view(AdminModelView(admin_history, db.session))
     admin.add_view(DBModelView(dummy, db.session))
     return admin
