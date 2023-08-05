@@ -347,3 +347,34 @@ from app import mail # importent,don't remove
   mail.send(msg)
   return 'Sent'
 ```
+
+## Setup a WSGI server insted of development server
+
+```
+WARNING: This is a development server. Do not use it in a production deployment.
+Use a production WSGI server instead
+```
+
+> As of Flask 2.2, the development server always shows this warning, it is not possible to disable it. The development server is not intended for use in production. It is not designed to be particularly efficient, stable, or secure. Use a production WSGI server instead. See the deployment docs from Flask for more information.
+
+> That warning is just a warning though, it's not an error preventing your app from running. If your app isn't working, there's something else wrong with your code.
+
+> That warning applies to the development server, not Flask itself. The Flask framework is appropriate for any type of application and deployment.
+
+Most of the case it is not required still if you want here the step.
+
+```
+pip install waitress
+```
+
+In `app.py` replace the `__main__` section with this
+
+```
+if __name__ == "__main__":
+  from waitress import serve
+  serve(
+    app,
+    host=currentAppConfig.host,
+    port=currentAppConfig.port
+  )
+```
