@@ -1,15 +1,18 @@
-import views
-from admin import auth, adminconsole
 from flask import Flask, redirect
 from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager, current_user
-from models import *
-import urls
+
+
 from flask_migrate import Migrate
 from flask_admin import Admin, BaseView, expose, Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from models import User
+
+from models import *
+import urls
+from admin import auth, adminconsole
 import admin.config as appconfig
+
 
 app = Flask(__name__)
 
