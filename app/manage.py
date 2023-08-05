@@ -4,8 +4,16 @@ import sys
 import os
 
 
-operations = ["createsuperuser", "makemigrations",
-              "migrate", "runserver", "-h", "--help", "init", "backup-db"]
+operations = [
+    "createsuperuser",
+    "makemigrations",
+    "migrate",
+    "runserver",
+    "-h",
+    "--help",
+    "init",
+    "backup-db",
+]
 
 
 def createsuperuser():
@@ -13,35 +21,35 @@ def createsuperuser():
 
     try:
         username = input("Enter Username* : ")
-        if username=="":
+        if username == "":
             print("Username can't be empty")
             print("Superuser creation Aborted")
             return False
 
         password = input("Enter password* : ")
-        if password=="":
+        if password == "":
             print("Password can't be empty")
             print("Superuser creation Aborted")
             return False
 
-        email=input("Enter email : [Default : {}@{}.com".format(username,username))
-        if email=="":
-            email="{}@{}.com".format(username,username)
-        firstname=input("Enter Firstname :")
-        lastname=input("Enter Lastname :")
+        email = input("Enter email : [Default : {}@{}.com".format(username, username))
+        if email == "":
+            email = "{}@{}.com".format(username, username)
+        firstname = input("Enter Firstname :")
+        lastname = input("Enter Lastname :")
         print("\n\n\n")
-        print("*"*20)
+        print("*" * 20)
         print("Here is what we got from you")
-        print("Username :",username)
-        print("Password :",len(password)*"*")
-        print("Email : ",email)
-        print("Firstname :",firstname)
-        print("Lastname :",lastname)
-        print("*"*20,"\n")
-        
+        print("Username :", username)
+        print("Password :", len(password) * "*")
+        print("Email : ", email)
+        print("Firstname :", firstname)
+        print("Lastname :", lastname)
+        print("*" * 20, "\n")
+
         perm = input("Are your want to continue [Y/n]: ")
         with app.app_context():
-            if(perm.lower() != "n"):
+            if perm.lower() != "n":
                 today = date.today()
                 joined = today.strftime("%b-%d-%Y")
 
@@ -58,13 +66,14 @@ def createsuperuser():
                     firstname=firstname,
                     lastname=lastname,
                     joined=joined,
-                    permission="admin",
+                    role="admin",
                 )
 
                 db.session.add(new_user)
                 db.session.commit()
                 print(
-                    "Superuser created succufully.\nDon't forget your username and password.")
+                    "Superuser created succufully.\nDon't forget your username and password."
+                )
 
     except Exception as e:
         print(e)
@@ -72,35 +81,35 @@ def createsuperuser():
 
 def migrate_init():
     try:
-        os.system('flask db init')
+        os.system("flask db init")
     except:
         print("makemigrations failed.")
 
 
 def makemigrations():
     try:
-        os.system('flask db migrate')
+        os.system("flask db migrate")
     except:
         print("makemigrations failed.")
 
 
 def migrate():
     try:
-        os.system('flask db upgrade')
+        os.system("flask db upgrade")
     except:
         print("migration failed.")
 
 
 def backup_db():
     try:
-        os.system('python backup_tool.py')
+        os.system("python backup_tool.py")
     except Exception as e:
-        print("ERROR OCCURED !!!!! \n"+str(e))
+        print("ERROR OCCURED !!!!! \n" + str(e))
 
 
 def runserver():
     try:
-        os.system('python app.py')
+        os.system("python app.py")
     except:
         print("flask app stopped successfully")
 
@@ -122,7 +131,7 @@ def flaskhelp():
     print(desp)
 
 
-if len(sys.argv)<2:
+if len(sys.argv) < 2:
     flaskhelp()
 elif sys.argv[1] == operations[0]:
     createsuperuser()

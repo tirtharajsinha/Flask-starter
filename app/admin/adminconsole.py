@@ -16,6 +16,7 @@ import urls
 # register your model before return statement.
 ############################################
 
+
 def load_history(model, event):
     now = datetime.now()
     newhist = admin_history(
@@ -23,7 +24,7 @@ def load_history(model, event):
         table=model.__tablename__,
         event=event,
         row_id=model.id,
-        time=now.strftime("%d/%m/%Y %H:%M:%S")
+        time=now.strftime("%d/%m/%Y %H:%M:%S"),
     )
     db.session.add(newhist)
     db.session.commit()
@@ -42,14 +43,14 @@ class AdminView(AdminIndexView):
     def is_accessible(self):
         perm = (
             current_user.is_authenticated
-            and current_user.permission == "admin"
+            and current_user.role == "admin"
             and current_user.is_active
         )
         return perm
 
     def inaccessible_callback(self, name, **kwargs):
         # redirect to login page if user doesn't have access
-        return redirect("/adminlogin?next=admin")
+        return redirect("/login?next=/admin")
 
 
 class DBModelView(ModelView):
@@ -59,14 +60,14 @@ class DBModelView(ModelView):
     def is_accessible(self):
         perm = (
             current_user.is_authenticated
-            and current_user.permission == "admin"
+            and current_user.role == "admin"
             and current_user.is_active
         )
         return perm
 
     def inaccessible_callback(self, name, **kwargs):
         # redirect to login page if user doesn't have access
-        return redirect("/login")
+        return redirect("/login?next=/admin")
 
     def after_model_change(self, form, model, is_created):
         print(model.__tablename__, model.id, is_created, "----------------->")
@@ -88,10 +89,11 @@ class DBModelView(ModelView):
 
     def _icon_formatter(view, context, model, name):
         return model.icon[:30]
+
     column_formatters = {
-        'desc': _description_formatter,
-        'image': _image_formatter,
-        'icon': _icon_formatter
+        "desc": _description_formatter,
+        "image": _image_formatter,
+        "icon": _icon_formatter,
     }
 
 
@@ -103,14 +105,14 @@ class AdminModelView(ModelView):
     def is_accessible(self):
         perm = (
             current_user.is_authenticated
-            and current_user.permission == "admin"
+            and current_user.role == "admin"
             and current_user.is_active
         )
         return perm
 
     def inaccessible_callback(self, name, **kwargs):
         # redirect to login page if user doesn't have access
-        return redirect("/login")
+        return redirect("/login?next=/admin")
 
 
 # setting up admin panel
@@ -118,19 +120,17 @@ def get_admin(app):
     admin = Admin(
         app,
         name="admin panel",
-
         index_view=AdminView(
             name="Home",
             menu_icon_type="glyph",
             menu_icon_value="glyphicon-home",
             url="/admin",
-        )
+        ),
     )
     admin = add_adminview(admin)
     admin.add_view(AdminModelView(admin_history, db.session))
 
     return admin
-
 
 
 def add_adminview(admin):

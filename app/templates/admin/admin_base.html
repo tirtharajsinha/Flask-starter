@@ -132,7 +132,7 @@
         <h5>Hi, {{ user.username }}</h5>
         <a href="/logout" class="home"><i class="fa fa-admin"></i>Logout</a>
         {% else %}
-        <a href="/adminlogin" class="home"><i class="fa fa-admin"></i>login</a>
+        <a href="/login" class="home"><i class="fa fa-admin"></i>login</a>
         {% endif %}
 
         <a href="/" class="home"><i class="fa fa-admin"></i>View app</a>
@@ -165,7 +165,7 @@
         </div>
         <div class="box">
             <label>User type.</label>
-            <input type="text" value={{user.permission}}>
+            <input type="text" value={{user.role}}>
         </div>
     </form>
 

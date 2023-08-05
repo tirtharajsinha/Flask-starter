@@ -9,6 +9,7 @@ from flask_migrate import Migrate
 from flask_admin import Admin, BaseView, expose, Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from models import User
+import admin.config as appconfig
 
 app = Flask(__name__)
 
@@ -17,14 +18,10 @@ app = Flask(__name__)
 csrf = CSRFProtect(app)
 
 # config
+currentAppConfig = appconfig.Config
 app.config.from_object("admin.config.Config")
 
-# database connection
-
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config[
-    "SQLALCHEMY_DATABASE_URI"
-] = "sqlite:///registration.db"
+# Initiate database connection
 db.init_app(app)
 
 # setting up flask migrate
@@ -32,7 +29,6 @@ migrate = Migrate(app, db)
 
 
 #######################
-
 
 # urls
 app = urls.add_url(app)
@@ -53,10 +49,12 @@ def load_user(get_id):
     return User.query.filter_by(username=get_id).first()
 
 
-
-
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(
+        debug=currentAppConfig.DEBUG,
+        host=currentAppConfig.host,
+        port=currentAppConfig.port,
+    )
 
 
 # this is a custom template from Tirtharaj Sinha (https://github.com/tirtharajsinha/Flask-starter.git)

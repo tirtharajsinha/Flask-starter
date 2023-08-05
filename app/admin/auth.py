@@ -1,5 +1,6 @@
 from flask import render_template, request, redirect, send_from_directory, flash
 import datetime
+
 # from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required, current_user
 from models import User
@@ -19,7 +20,7 @@ def authenticate(username, password):
     return user
 
 
-def adminlogin():
+def login():
     from app import db
 
     if request.method == "POST":
@@ -27,21 +28,22 @@ def adminlogin():
         password = request.form["password"]
         user = User.query.filter_by(username=username).first()
         if not user:
-            flash(
-                "User not found."
-            )
-            return redirect("/adminlogin")
+            flash("User not found.")
+            return redirect("/login")
         print(user.id)
         if user.password != password:
             flash("username or password is incorrect.")
-            return redirect("/adminlogin")
-        print(user.permission)
-        if user.permission != "admin":
-            flash("User has not admin permission.")
-            return redirect("/adminlogin")
+            return redirect("/login")
+        print(user.role)
+        if user.role != "admin":
+            flash("User has not admin role.")
+            return redirect("/login")
         rem = False
         login_user(user, remember=rem)
+        page = request.args.get("next")
         flash("Successfully logged in.")
+        if page != "" and page != None:
+            return redirect(page)
         return redirect("/admin")
 
     return render_template("admin/login.html")
