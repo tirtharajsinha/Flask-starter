@@ -328,16 +328,17 @@ MAIL_USE_SSL = False
 3. Enable mail service in `app.py`
 
 ```
-mail = Mail(app)
+import mail as mailConfig
+mail,app = mailConfig(app)
 ```
 
 4. Send mail from your view
 
 ```
 from flask_mail import Mail, Message
+from mail import mail
 
 def send_mail():
-from app import mail # importent,don't remove
   msg = Message(
       '<SUBJECT>',
       sender ='yourId@gmail.com',
