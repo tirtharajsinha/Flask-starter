@@ -11,7 +11,7 @@ class Config(object):
     STATIC_FOLDER = ("static",)
     TEMPLATE_FOLDER = "templates"
     FLASK_SECRET = SECRET_KEY
-    host = "localhost"
+    host = "0.0.0.0"
     port = 5000
 
 

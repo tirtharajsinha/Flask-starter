@@ -26,9 +26,35 @@ It pushed me to make a flask starter pack to solve the problem. In usual manner 
 - _ORM features_ with **_FLASK-SQLAlchemy_**
 - _DB Migrations_ with **_Flask-Migrate_**
 
+### NOTICE :
+
+- Recommnded for small and mediam sized apps or for more control over code.
+- For larger app please use frameworks like djnago/djnago-rest-framework. (from my own experience)
+
 <hr>
 
-# Getting started
+# Getting started 1 (Via Docker) (Recommended for docker users)
+
+1. install docker.
+2. run the following commands
+
+to build and start development server
+
+```
+docker compose up --build
+```
+
+3. Sync the code automatically on docker development container.
+
+open a another terminal in the same location and run
+
+```
+docker compose watch
+```
+
+Now any change in code will reflect in your development server automatically.
+
+# Getting started 2 (Via git clone)
 
 ## Step 1 : Get the starter app
 
